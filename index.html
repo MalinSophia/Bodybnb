@@ -9,6 +9,229 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@100..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =====================================================
+           MOBILE-ONLY OPTIMIERUNGEN
+           Alles unter dieser Media Query betrifft NUR Mobile.
+           Am Desktop-Layout ändert sich nichts.
+           ===================================================== */
+        @media (max-width: 768px) {
+
+            /* --- HEADER: fixiert, immer sichtbar --- */
+            .header {
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                width: 100%;
+                z-index: 3000;
+                padding: 10px 16px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            }
+            /* Platz schaffen, damit Inhalt nicht hinter dem fixen Header verschwindet */
+            body { padding-top: 58px; }
+            .scroll-progress-container { top: 58px; }
+
+            .brand-name { font-size: 17px; }
+            .header-logo { height: 26px; }
+
+            /* --- NAV: in Burger-Menü verschoben, nicht mehr seitlich scrollbar --- */
+            .nav-search-container {
+                display: none !important; /* horizontale Navi komplett ausblenden */
+            }
+            .search-btn { display: none; }
+
+            /* Mobile Burger-Menü Inhalt: Inhaltsstoffe / Abomodelle / Wissenschaft */
+            #burger-modal .modal-content {
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+            .mobile-nav-section {
+                border-top: 1px solid #eee;
+                margin-top: 8px;
+                padding-top: 8px;
+            }
+            .mobile-nav-section-title {
+                padding: 10px 20px 4px;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                color: #888;
+            }
+            .mobile-nav-section ul {
+                list-style: none;
+                margin: 0; padding: 0;
+            }
+            .mobile-nav-section ul li {
+                padding: 10px 20px;
+                font-size: 14px;
+                color: #333;
+            }
+            .mobile-nav-section ul li:hover {
+                background: #f4f7f5;
+                color: #2d8a5d;
+            }
+
+            .right-icons { gap: 16px; }
+
+            /* --- ACTION BAR --- */
+            .action-bar-top { padding: 14px 16px 8px; }
+            .product-main-title { font-size: 15px; }
+
+            /* =====================================================
+               BILDERGALERIE: Swipe-Karussell statt Grid
+               ===================================================== */
+            .gallery-grid {
+                display: flex !important;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding: 0;
+                gap: 0;
+                margin: 0;
+                scrollbar-width: none;
+            }
+            .gallery-grid::-webkit-scrollbar { display: none; }
+
+            .main-image-container,
+            .side-images-container {
+                display: contents; /* löst die Grid-Wrapper auf, Bilder werden direkte Flex-Kinder */
+            }
+
+            .main-image-container img,
+            .gallery-img-small {
+                scroll-snap-align: start;
+                flex: 0 0 100%;
+                width: 100vw;
+                height: 280px;
+                object-fit: cover;
+                border-radius: 0 !important;
+            }
+
+            .side-image-wrapper {
+                flex: 0 0 100%;
+                position: relative;
+            }
+
+            /* =====================================================
+               GALERIE-VOLLBILD-MODAL: ein Bild nach dem anderen
+               ===================================================== */
+            .gallery-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: black;
+                z-index: 8000;
+            }
+            .gallery-overlay.active { display: block; }
+
+            .gallery-overlay .gallery-track {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+            .gallery-overlay .gallery-slide {
+                flex: 0 0 100%;
+                scroll-snap-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+            .gallery-overlay .gallery-slide img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+            .gallery-overlay .gallery-arrow { display: none; } /* Pfeile weg, dafür wischen */
+            .gallery-overlay .close-gallery-btn {
+                position: fixed;
+                top: 16px; right: 16px;
+                z-index: 8100;
+                font-size: 32px;
+            }
+            .gallery-overlay .gallery-caption {
+                position: fixed;
+                bottom: 20px;
+                left: 0; right: 0;
+                text-align: center;
+                color: white;
+                font-size: 13px;
+                z-index: 8100;
+            }
+
+            /* =====================================================
+               INHALTSSTOFFE: immer 2 Karten nebeneinander
+               ===================================================== */
+            .ingredients-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px;
+                padding: 0 16px 16px;
+            }
+            .ingredient-card { height: 110px; }
+            .card-front, .card-back { font-size: 13px; padding: 10px; }
+            .card-back { font-size: 11px; }
+
+            /* =====================================================
+               WEITERE PRODUKTE: "mehr zum scrollen" andeuten
+               ===================================================== */
+            .more-products-section { padding: 0 0 0 16px; overflow: hidden; }
+            .products-carousel-wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-right: 16px;
+                padding-bottom: 14px;
+                /* letzte Karte leicht anschneiden, damit klar ist: hier geht's weiter */
+                scroll-snap-type: x proximity;
+            }
+            .product-card {
+                width: 78vw;
+                flex-shrink: 0;
+                scroll-snap-align: start;
+            }
+            .product-img-box { height: 200px; }
+            .carousel-indicator-box { display: none; }
+
+            /* Allgemeine Mobile-Anpassungen für ein "App-Gefühl" */
+            .booking-and-info { flex-direction: column; gap: 24px; padding: 0 16px; }
+            .main-content { padding: 16px 0; }
+            .booking-container { width: 100%; padding: 0; }
+            .sticky-box { position: static; }
+            .date-input-group { flex-direction: column; }
+            .date-input-group .field-item { border-bottom: 1px solid #ebebeb; }
+            .date-input-group .field-item:last-child { border-bottom: none; }
+
+            .usp-section { grid-template-columns: 1fr; padding: 24px 16px; gap: 14px; }
+            .refill-section { padding: 0 16px; margin: 28px auto; }
+            .refill-row { flex-direction: column !important; text-align: center !important; gap: 10px; }
+            .row-right { flex-direction: column !important; }
+            .refill-img-box { width: 80px; height: 80px; margin: 0 auto; }
+
+            .quality-guarantee-banner { padding: 32px 16px; }
+            .guarantee-grid { grid-template-columns: 1fr; gap: 24px; }
+
+            .map-section { width: 92%; }
+
+            .reviews-section { padding: 24px 16px; }
+            .reviews-grid { grid-template-columns: 1fr; gap: 14px; }
+
+            footer {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 30px 16px;
+                gap: 24px;
+            }
+
+            .payment-methods-grid { grid-template-columns: 1fr; }
+            .modal-card { padding: 20px 16px; width: 100%; max-width: 100%; margin: 0 12px; }
+        }
+
+        @media (max-width: 380px) {
+            .product-title { font-size: 18px; }
+            footer { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
     <div id="top"></div>
@@ -64,7 +287,7 @@
     </div>
 
    <div class="right-icons">
-    
+
     <div class="dropdown-wrapper">
         <span id="settings-trigger" style="cursor:pointer;">⚙️</span>
         <div id="country-modal" class="dropdown-popover">
@@ -84,10 +307,37 @@
         <span id="burger-trigger" style="cursor:pointer;">☰</span>
         <div id="burger-modal" class="dropdown-popover">
             <div class="modal-content">
-                <ul>
-                    <li><a href="#">Registrieren</a></li>
-                    <li><a href="#" class="logout-link">Ausloggen</a></li>
-                </ul>
+                
+
+                <!-- Nur auf Mobile sichtbar: Navigation, die am Desktop oben in der Leiste steht -->
+                <div class="mobile-nav-section">
+                    <div class="mobile-nav-section-title">Inhaltsstoffe</div>
+                    <ul>
+                        <li>Vitamin A</li>
+                        <li>Vitamin B</li>
+                        <li>Vitamin B12</li>
+                        <li>Vitamin C</li>
+                        <li>Vitamin D</li>
+                        <li>Vitamin E</li>
+                        <li>Vitamin K</li>
+                    </ul>
+                </div>
+                <div class="mobile-nav-section">
+                    <div class="mobile-nav-section-title">Abomodelle</div>
+                    <ul>
+                        <li>1 Monat</li>
+                        <li>3 Monate</li>
+                        <li>6 Monate</li>
+                        <li>12 Monate</li>
+                    </ul>
+                </div>
+                <div class="mobile-nav-section">
+                    <div class="mobile-nav-section-title">Wissenschaft</div>
+                    <ul>
+                        <li>Hersteller</li>
+                        <li>Information</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -101,22 +351,29 @@
     </div>
 </div>
 
-<section class="gallery-grid">
+<!-- ========== BILDERGALERIE ========== -->
+<section class="gallery-grid" id="mainGallery">
     <div class="main-image-container">
-        <img src="HeaderBild1.0.png" alt="Vitaloop Hauptbild" class="gallery-img-large">
+        <img src="HeaderBild1.0.png" alt="Vitaloop Hauptbild" class="gallery-img-large" data-gallery-index="0">
     </div>
     <div class="side-images-container">
         <div class="side-image-wrapper">
-            <img src="HeaderBild4.0.png" alt="Vitaloop Detail" class="gallery-img-small top-right">
+            <img src="HeaderBild4.0.png" alt="Vitaloop Detail" class="gallery-img-small top-right" data-gallery-index="1">
         </div>
         <div class="side-image-wrapper">
-            <img src="HeaderBild3.0.png" alt="Vitaloop Holzcontainer" class="gallery-img-small bottom-right">
-            <button id="show-all-photos">
-                <span>⠿</span> Alle Fotos anzeigen
-            </button>
+            <img src="HeaderBild3.0.png" alt="Vitaloop Holzcontainer" class="gallery-img-small bottom-right" data-gallery-index="2">
         </div>
     </div>
 </section>
+
+<!-- Punkte-Indikator nur für Mobile-Swipe-Galerie -->
+<div class="gallery-dots" id="galleryDots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+</div>
+
+
 
 <main class="main-content">
 
@@ -138,7 +395,7 @@
     <p class="lead-text">
         Unser Premium-Multivitaminpräparat vereint traditionelles Wissen aus dem Schwarzwald mit moderner Zellforschung. Gewonnen aus erlesenen Tannenzapfen-Extrakten, liefert es maximale Bioverfügbarkeit für deinen Tag.
     </p>
-    
+
     <div class="benefits-list-clean">
         <div class="benefit-row">🌿 <strong>Zell-Energie:</strong> Unterstützt den natürlichen Energiestoffwechsel und reduziert Müdigkeit.</div>
         <div class="benefit-row">🌲 <strong>Tannenzapfenöl:</strong> Reich an seltenen Antioxidantien für optimalen Zellschutz.</div>
@@ -150,7 +407,7 @@
         <p>Täglich 1 Kapsel unzerkaut mit reichlich Wasser (ca. 200ml) morgens zum Frühstück einnehmen.</p>
     </div>
 </div>
-            
+
         </div>
 
        <div class="booking-container">
@@ -160,7 +417,7 @@
             <span class="price-label">Gesamtpreis</span>
             <h2 id="display-price">150€</h2>
         </div>
-        
+
         <div class="booking-fields">
             <div class="date-input-group">
                 <div class="field-item">
@@ -182,7 +439,7 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="live-ticker">
             <span class="ticker-icon">⚡</span>
             <p>Nur noch 3 Rationen für diesen Zeitraum verfügbar</p>
@@ -191,10 +448,10 @@
         <div class="storno-info" id="storno-text">
             0€ heute. Kostenlose Stornierung bis 1 Tag vor Liefertermin
         </div>
-        
+
         <button class="btn-reserve" id="btn-pay-trigger">Bezahlen</button>
         <p class="small-text">Du musst noch nichts bezahlen.</p>
-        
+
         <hr class="divider">
         <div class="trust-badges">
             <div class="badge-item">
@@ -238,7 +495,7 @@
 
     <div class="timeline-scroll-wrapper">
         <div class="timeline-container-horizontal">
-            
+
             <div class="timeline-item-horizontal">
                 <div class="timeline-badge-horizontal">1-7</div>
                 <div class="timeline-content-horizontal">
@@ -275,7 +532,7 @@
     <section class="refill-section">
     <h2 class="refill-main-title">Ein Stück Natur bei dir Zuhause</h2>
     <p class="refill-subtitle">Unser „Everlasting Wood" Refill-Konzept macht aus deinem Produkt mehr als nur ein Supplement – es wird zu einem Statement für bewussten Konsum.</p>
-    
+
     <div class="refill-content-container">
         <div class="refill-row row-left">
             <div class="refill-img-box"><img src="Packung_01.png" alt="Premium Holzcontainer"></div>
@@ -302,9 +559,9 @@
 
    <section class="ingredients-section">
     <h2 style="text-align: center; padding: 20px; color: #0f4c3a; font-family: system-ui, sans-serif;">Woraus besteht unser Produkt?</h2>
-    
+
     <div class="ingredients-grid">
-        
+
         <div class="ingredient-card" onclick="flipCard(this)">
             <div class="card-inner">
                 <div class="card-front">
@@ -401,7 +658,7 @@
     <div class="guarantee-container">
         <h3 class="guarantee-title">Sicherheit & Reinheit ohne Kompromisse</h3>
         <p class="guarantee-subtitle">Deine Gesundheit verdient die höchsten Standards. Dafür stehen wir ein:</p>
-        
+
         <div class="guarantee-grid">
             <div class="guarantee-item">
                 <div class="guarantee-icon-wrapper">
@@ -452,10 +709,8 @@
         <p>Echte Erfahrungen von Menschen, die ihre Vitalität selbst in die Hand nehmen.</p>
     </div>
 
-    <!-- Das Kachel-Grid -->
     <div class="reviews-grid">
-        
-        <!-- Bewertung 1 (Max Mustermann) -->
+
         <div class="review-card">
             <div class="review-card-header">
                 <div class="user-avatar">MM</div>
@@ -468,7 +723,6 @@
             <p class="review-text">"Seit ich Vitaloop nehme, fühle ich mich viel gesünder. Meine Blutwerte haben sich deutlich verbessert!"</p>
         </div>
 
-        <!-- Bewertung 2 -->
         <div class="review-card">
             <div class="review-card-header">
                 <div class="user-avatar">SL</div>
@@ -481,7 +735,6 @@
             <p class="review-text">"Ich war anfangs skeptisch wegen des Tannenzapfenöls, aber die Wirkung hat mich komplett überzeugt. Mein Nachmittagstief im Büro ist wie weggeblasen."</p>
         </div>
 
-        <!-- Bewertung 3 -->
         <div class="review-card">
             <div class="review-card-header">
                 <div class="user-avatar">TK</div>
@@ -496,7 +749,6 @@
 
     </div>
 
-    <!-- Der verfeinerte Link für alle Bewertungen -->
     <div class="reviews-footer">
         <a href="#" class="btn-all-reviews">Alle 423 Bewertungen lesen</a>
     </div>
@@ -507,7 +759,7 @@
 <section class="more-products-section">
     <h2 class="more-products-title">Weitere Produkte aus dem Schwarzwald</h2>
     <div class="products-carousel-wrapper">
-        
+
         <a href="forest-berries.html" class="product-card-link">
             <div class="product-card">
                 <div class="product-img-box"><img src="Produkt_03.png" alt="Vitaloop - Forest Berries Mix"></div>
@@ -561,26 +813,81 @@
     </div>
 </footer>
 
+<!-- ========== GALERIE-VOLLBILD-MODAL ========== -->
 <div id="galleryModal" class="gallery-overlay">
     <button class="close-gallery-btn" id="closeGallery">&times;</button>
-
     <button class="gallery-arrow arrow-left" id="prevImage">&#10094;</button>
 
-    <div class="gallery-content">
-        <img id="activeGalleryImage" src="dein-bild1.jpg" alt="Vitaloop Produktansicht">
-        <div id="galleryCaption" class="gallery-caption">Ansicht 1 von 3</div>
+    <div class="gallery-track" id="galleryTrack">
+        <div class="gallery-slide"><img src="HeaderBild1.0.png" alt="Vitaloop Hauptbild"></div>
+        <div class="gallery-slide"><img src="HeaderBild4.0.png" alt="Vitaloop Detail"></div>
+        <div class="gallery-slide"><img src="HeaderBild3.0.png" alt="Vitaloop Holzcontainer"></div>
     </div>
+    <div id="galleryCaption" class="gallery-caption">Ansicht 1 von 3</div>
 
     <button class="gallery-arrow arrow-right" id="nextImage">&#10095;</button>
 </div>
 
 <script>
     function flipCard(cardElement) {
-        // Prüft, ob das Element im HTML existiert und schaltet die Drehung um
         if (cardElement) {
             cardElement.classList.toggle('flipped');
         }
     }
+
+    // ===========================================
+    // MOBILE BILDERGALERIE: Punkte synchron zum Swipe
+    // ===========================================
+    const mainGallery = document.getElementById('mainGallery');
+    const galleryDots = document.getElementById('galleryDots');
+
+    if (mainGallery && galleryDots) {
+        mainGallery.addEventListener('scroll', () => {
+            const index = Math.round(mainGallery.scrollLeft / mainGallery.clientWidth);
+            galleryDots.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        });
+    }
+
+    // ===========================================
+    // GALERIE VOLLBILD-MODAL (ein Bild nach dem anderen, swipebar)
+    // ===========================================
+    const showAllBtn = document.getElementById('show-all-photos');
+    const galleryModal = document.getElementById('galleryModal');
+    const galleryTrack = document.getElementById('galleryTrack');
+    const galleryCaption = document.getElementById('galleryCaption');
+    const closeGalleryBtn = document.getElementById('closeGallery');
+    const prevImageBtn = document.getElementById('prevImage');
+    const nextImageBtn = document.getElementById('nextImage');
+    const totalSlides = galleryTrack ? galleryTrack.children.length : 0;
+
+    function updateCaption() {
+        if (!galleryTrack || !galleryCaption) return;
+        const index = Math.round(galleryTrack.scrollLeft / galleryTrack.clientWidth);
+        galleryCaption.innerText = `Ansicht ${index + 1} von ${totalSlides}`;
+    }
+
+    showAllBtn?.addEventListener('click', () => {
+        galleryModal.classList.add('active');
+        galleryModal.style.display = 'block';
+        galleryTrack.scrollLeft = 0;
+        updateCaption();
+    });
+
+    closeGalleryBtn?.addEventListener('click', () => {
+        galleryModal.classList.remove('active');
+        galleryModal.style.display = 'none';
+    });
+
+    galleryTrack?.addEventListener('scroll', updateCaption);
+
+    prevImageBtn?.addEventListener('click', () => {
+        galleryTrack.scrollBy({ left: -galleryTrack.clientWidth, behavior: 'smooth' });
+    });
+    nextImageBtn?.addEventListener('click', () => {
+        galleryTrack.scrollBy({ left: galleryTrack.clientWidth, behavior: 'smooth' });
+    });
 </script>
 
 <div id="paymentModal" class="modal-overlay">
@@ -588,7 +895,7 @@
         <button class="close-modal-btn" id="closeModal">&times;</button>
         <h3>Deine Bestellung</h3>
         <p class="modal-subtitle">Zusammenfassung deines BodyBnB Abos</p>
-        
+
         <div class="modal-summary-box">
             <div class="summary-item"><strong>Produkt:</strong> <span>Vitaloop - Complete</span></div>
             <div class="summary-item"><strong>Start-Datum:</strong> <span id="modal-start-date">-</span></div>
